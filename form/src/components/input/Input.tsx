@@ -1,0 +1,86 @@
+import React, { useEffect, useId, useState } from "react";
+import { BaseBlock, InputBlock } from "../base/Base";
+import type { InputProps } from "./Input.types";
+
+/**
+ * Input component - FormData-compatible input field
+ * Uses native HTML input with name attribute for automatic FormData extraction
+ */
+const Input: React.FC<InputProps> = ({
+  name,
+  label,
+  size,
+  readOnly,
+  tagline,
+  type,
+  maxLength,
+  placeholder,
+  disabled,
+  required,
+  autofocus,
+  autoComplete,
+  className,
+  min,
+  max,
+  step,
+  defaultValue,
+  dataIsLoading,
+  error,
+}) => {
+  const id = useId();
+  const [currentLength, setCurrentLength] = useState(
+    defaultValue?.toString().length ?? 0,
+  );
+
+  useEffect(() => {
+    if (defaultValue) {
+      setCurrentLength(defaultValue.toString().length);
+    }
+  }, [defaultValue]);
+
+  return (
+    <BaseBlock
+      id={id}
+      label={label}
+      size={size}
+      tagline={tagline}
+      required={required ?? false}
+    >
+      <InputBlock
+        error={error}
+        maxLength={maxLength}
+        className={className}
+        dataIsLoading={dataIsLoading}
+      >
+        <input
+          disabled={disabled ?? false}
+          type={type ?? "text"}
+          name={name}
+          id={id}
+          readOnly={readOnly ?? false}
+          maxLength={maxLength}
+          placeholder={placeholder ?? ""}
+          autoFocus={autofocus ?? false}
+          min={min}
+          max={max}
+          step={step}
+          autoComplete={autoComplete}
+          defaultValue={defaultValue}
+          required={required}
+          onChange={(evt) => {
+            if (maxLength) {
+              setCurrentLength(evt.target.value.length);
+            }
+          }}
+        />
+        {maxLength && (
+          <span className="windmillui-max-length">
+            {currentLength} / {maxLength}
+          </span>
+        )}
+      </InputBlock>
+    </BaseBlock>
+  );
+};
+
+export default Input;
