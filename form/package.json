@@ -43,11 +43,11 @@
     "@types/react": "^19.2.8",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
+    "sass": "^1.97.2",
+    "scss": "^0.2.4",
     "tslib": "^2.8.1",
     "tsup": "^8.5.1",
     "typed-scss-modules": "^8.1.1",
-    "typescript": "^5.9.3",
-    "sass": "^1.97.2",
-    "scss": "^0.2.4"
+    "typescript": "^5.9.3"
   }
 }
