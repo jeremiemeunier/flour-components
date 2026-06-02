@@ -23,4 +23,9 @@ export interface InputProps {
   defaultValue?: string | number;
   dataIsLoading?: boolean;
   error?: string;
+  regex?: {
+    value: RegExp;
+    message: string;
+    type: "required" | "rejected";
+  };
 }

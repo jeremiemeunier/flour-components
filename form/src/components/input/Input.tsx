@@ -26,9 +26,12 @@ const Input: React.FC<InputProps> = ({
   defaultValue,
   dataIsLoading,
   error,
+  regex,
 }) => {
   const id = useId();
-  const [currentLength, setCurrentLength] = useState(
+
+  const [internError, setInternError] = useState<string>("");
+  const [currentLength, setCurrentLength] = useState<number>(
     defaultValue?.toString().length ?? 0,
   );
 
@@ -47,7 +50,7 @@ const Input: React.FC<InputProps> = ({
       required={required ?? false}
     >
       <InputBlock
-        error={error}
+        error={internError || error}
         maxLength={maxLength}
         className={className}
         dataIsLoading={dataIsLoading}
@@ -70,6 +73,32 @@ const Input: React.FC<InputProps> = ({
           onChange={(evt) => {
             if (maxLength) {
               setCurrentLength(evt.target.value.length);
+            }
+
+            if (regex) {
+              if (!regex.value || !regex.message) {
+                console.error(
+                  "Input component: regex prop requires both value and message properties",
+                );
+                return;
+              }
+
+              if (regex.type === "required") {
+                if (!regex.value.test(evt.target.value)) {
+                  setInternError(regex.message);
+                } else {
+                  setInternError("");
+                }
+                return;
+              }
+
+              if (regex.type === "rejected") {
+                if (regex.value.test(evt.target.value)) {
+                  setInternError(regex.message);
+                } else {
+                  setInternError("");
+                }
+              }
             }
           }}
         />
