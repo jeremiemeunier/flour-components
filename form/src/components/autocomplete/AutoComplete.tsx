@@ -259,6 +259,19 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
 
                       const uniqueKey =
                         optionValue || `${optionLabel}-${index}`;
+
+                      if (options.value.enhancedValues?.data) {
+                        const isEnhanced =
+                          options.value.enhancedValues.data.some(
+                            (enhancedOption) =>
+                              String(enhancedOption[options.value.key]) ===
+                              optionValue,
+                          );
+                        if (isEnhanced) {
+                          return null; // Skip rendering if it's already in enhanced values
+                        }
+                      }
+
                       return (
                         <div
                           className={
